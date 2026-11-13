@@ -406,9 +406,9 @@ window.Thief = window.Thief || {
         thief.style.visibility = "hidden"
 
         var anim = ghost.animate([
-            { transform: "translate(0, 0) scale(1)", boxShadow: "0 0 0 rgba(0,0,0,0)" },
-            { transform: `translate(${dx / 2}px, ${dy / 2 - 40}px) scale(1.25)`, boxShadow: "0 18px 14px rgba(0,0,0,0.35)", offset: 0.5 },
-            { transform: `translate(${dx}px, ${dy}px) scale(1)`, boxShadow: "0 0 0 rgba(0,0,0,0)" }
+            { transform: "translate(0, 0) scale(1)" },
+            { transform: `translate(${dx / 2}px, ${dy / 2 - 40}px) scale(1.25)`, offset: 0.5 },
+            { transform: `translate(${dx}px, ${dy}px) scale(1)` }
         ], { duration: Math.min(750, 320 + Math.hypot(dx, dy) * 0.6), easing: "ease-in-out" })
 
         var land = () => {
