@@ -94,6 +94,8 @@
     
     protected override void OnInitialized()
     {
+        Players.Reset();
+        Playernum = Math.Clamp(Playernum, 2, 4);
         PlayersLeft = Playernum - 1;
         
     }
@@ -109,7 +111,11 @@
         }
 
         string color = Players.PlayerList[num].Color;
-        Console.WriteLine(color);
+        if (Players.PlayerList.Where((p, i) => i != num && p.Active).Any(p => p.Color == color))
+        {
+            JS.InvokeVoidAsync("alert", "This color is already taken by another player.");
+            return;
+        }
         
         if (Players.PlayerList[num].Active == false)
         {
@@ -118,10 +124,7 @@
                 Players.PlayerList[num].Active = true;
                 foreach (var player in Players.PlayerList)
                 {
-                    if (player.Active)
-                    {
-                        player.Color = player.Color.Remove(0, 1); //wenn ein indexrange fehler ist, dann diese zeile auskommentieren / kommentierne
-                    }
+                    player.Color = player.Color.TrimStart('#');
                 }
                 buttonState[num] = true;
                 string uri = string.Format("/MainGame?username1={0}&color1={1}&active1={2}&username2={3}&color2={4}&active2={5}&username3={6}&color3={7}&active3={8}&username4={9}&color4={10}&active4={11}", Players.PlayerList[0].Name, Players.PlayerList[0].Color, Players.PlayerList[0].Active, Players.PlayerList[1].Name, Players.PlayerList[1].Color, Players.PlayerList[1].Active, Players.PlayerList[2].Name, Players.PlayerList[2].Color, Players.PlayerList[2].Active, Players.PlayerList[3].Name, Players.PlayerList[3].Color, Players.PlayerList[3].Active);
