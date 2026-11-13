@@ -390,18 +390,24 @@
     position: absolute;
     inset: -4px -10px;
 }
+/* --- gebautes liegt immer über dem blauen zeug + über dem gehoverten tile */
+.intersec:not(.active){
+    z-index: 6;
+}
+.bord:not(.active){
+    z-index: 4;
+}
 /* --- hover bei bauplätzen, inline farbe braucht important */
 .intersec.active:hover{
     background-color: rgba(0, 160, 255, 0.95) !important;
-    transform: scale(1.8);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 10px 3px rgba(0, 160, 255, 0.8);
+    transform: scale(1.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 6px 2px rgba(0, 160, 255, 0.7);
     z-index: 5;
     cursor: pointer;
 }
 .bord.active:hover{
     background-color: rgba(0, 160, 255, 0.95) !important;
-    scale: 1.15;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 10px 2px rgba(0, 160, 255, 0.8);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 6px 1px rgba(0, 160, 255, 0.7);
     z-index: 5;
     cursor: pointer;
 }
@@ -418,9 +424,6 @@
 @@media (prefers-reduced-motion: reduce){
     .intersec.active:hover, .intersec:has(.crownTemp):hover .crownTemp{
         transform: none;
-    }
-    .bord.active:hover{
-        scale: none;
     }
 }
 </style>

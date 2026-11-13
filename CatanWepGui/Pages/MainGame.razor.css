@@ -138,7 +138,7 @@ main {
     width: calc(var(--s) - 123px);
     min-width: calc(var(--s) - 123px);
     clip-path: unset;
-    transition: background-color 0.2s ease, scale 0.15s ease, box-shadow 0.15s ease !important;
+    transition: background-color 0.2s ease, box-shadow 0.15s ease !important;
 }
 #top_grid_line_2{
     transform: rotate(-60deg)
