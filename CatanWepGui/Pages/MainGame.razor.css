@@ -9,10 +9,17 @@
 
 .tile{
     position: relative;
-    transition: 0.2s;
+    user-select: none;
+    transition: filter 0.2s ease;
     background-size: cover;
 }
+.tile:hover{
+    filter: brightness(1.15);
+    cursor: pointer;
+}
 .tile a{
+    pointer-events: none;
+    user-select: none;
     position: absolute;
     transform: translate(-50%, -50%);
     top: 50%;
@@ -101,7 +108,7 @@ main {
     width: calc(var(--s) - 120px);
     min-width: calc(var(--s) - 120px);
     clip-path: unset;
-    transition-duration: 0.5s !important;
+    transition: background-color 0.3s ease !important;
 }
 #top_grid_37{
     position: relative;
@@ -129,7 +136,7 @@ main {
     width: calc(var(--s) - 123px);
     min-width: calc(var(--s) - 123px);
     clip-path: unset;
-    transition-duration: 0.5s !important;
+    transition: background-color 0.3s ease !important;
 }
 #top_grid_line_2{
     transform: rotate(-60deg)
@@ -407,7 +414,7 @@ aside nav button:hover{;
     margin-left: -50px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     max-width: 20%;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, margin-right 0.3s ease;
     padding: 10px;
     flex-wrap: wrap;
 }
@@ -450,6 +457,7 @@ aside nav button:hover{;
     display: none;
     align-items: center;
     justify-content: center;
+    animation: overlayIn 0.35s ease-out;
 }
 
 #winnerOverlay footer{
@@ -461,6 +469,7 @@ aside nav button:hover{;
     width: 30%;
     height: 30%;
     background-color: #b68b69;
+    animation: winnerIn 0.45s cubic-bezier(0.2, 1.3, 0.4, 1);
 }
 
 #winnerName{
@@ -571,4 +580,24 @@ aside nav button:hover{;
     filter: grayscale(65%);
     text-decoration: line-through;
     text-decoration-thickness: 2px;
+}
+
+/* --- animationen */
+@keyframes overlayIn{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes winnerIn{
+    from{ transform: scale(0.85); opacity: 0; }
+    to{ transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    #winnerOverlay, #winnerOverlay footer{
+        animation: none;
+    }
+    .ressourceCard, .tile{
+        transition: none;
+    }
 }
