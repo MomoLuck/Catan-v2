@@ -31,24 +31,24 @@
             @if (CurrentPhaseId != 2 || PlayerMove)
             {
                 <div id="activePlayer" style="border: 2px solid @ColorRotator[CurrentcolorIdList[0]]; transition: border-color 0.5s ease-in-out;">
-                    <h4>Players @(CurrentcolorIdList[0] + 1)</h4>
-                    <a>Name : @ActivePlayers[CurrentcolorIdList[0]].Name</a><br/>
-                    <a>Victory points : @ActivePlayers[CurrentcolorIdList[0]].WinPoints</a>
+                    <h4>Spieler @(CurrentcolorIdList[0] + 1)</h4>
+                    <a>Name: @ActivePlayers[CurrentcolorIdList[0]].Name</a><br/>
+                    <a>Siegpunkte: @ActivePlayers[CurrentcolorIdList[0]].WinPoints</a>
                 </div>
                 for (int i = 1; i < ActivePlayers.Count; i++)
                 {
                     <div class="inactivePlayer" style="border: 2px solid @ColorRotator[CurrentcolorIdList[i]]; transition: border-color 0.5s ease-in-out;">
-                        <h4>Players @(CurrentcolorIdList[i] + 1)</h4>
-                        <a>Name : @ActivePlayers[CurrentcolorIdList[i]].Name</a><br/>
-                        <a>Victory points : @ActivePlayers[CurrentcolorIdList[i]].WinPoints</a>
+                        <h4>Spieler @(CurrentcolorIdList[i] + 1)</h4>
+                        <a>Name: @ActivePlayers[CurrentcolorIdList[i]].Name</a><br/>
+                        <a>Siegpunkte: @ActivePlayers[CurrentcolorIdList[i]].WinPoints</a>
                     </div>
                 }
             }
             else
             {
                 <div id="activePlayer" style="border: 2px solid black; transition: border-color 0.5s ease-in-out;">
-                    <h4>Dice Roll</h4>
-                    <a>@DiceRoll</a>
+                    <h4>Würfel</h4>
+                    <a class="diceNumber @(DiceRoll == "7" ? "seven" : "")">@DiceRoll</a>
                 </div>
             }
         </div>
@@ -95,7 +95,7 @@
                 </div>
                 <button id="costToggle" @onclick="@(() => CostOpen = !CostOpen)">Baukosten <span class="costArrow">&#9650;</span></button>
             </div>
-            <button id="developmentBuy" disabled="@(!CanBuild)" @onclick="@(() => BuyDevCard())">Buy Developmentcard</button>
+            <button id="developmentBuy" disabled="@Blocked" data-locked="@ThiefPending" @onclick="@(() => BuyDevCard())">Entwicklungs&shy;karte kaufen</button>
         </div>
 
     </address>
@@ -228,9 +228,9 @@
     </article>
     <aside>
         <nav>
-            <button id="City" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new City(), ".intersec"))">Stadt</button>
-            <button id="Settlement" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new Settlement(), ".intersec"))">Siedlung</button>
-            <button id="Road" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new Road(), ".bord"))">Straße</button>
+            <button id="City" class="building butn" disabled="@Blocked" data-locked="@ThiefPending" @onclick="@(() => Build(new City(), ".intersec"))">Stadt</button>
+            <button id="Settlement" class="building butn" disabled="@Blocked" data-locked="@ThiefPending" @onclick="@(() => Build(new Settlement(), ".intersec"))">Siedlung</button>
+            <button id="Road" class="building butn" disabled="@Blocked" data-locked="@ThiefPending" @onclick="@(() => Build(new Road(), ".bord"))">Straße</button>
             <button id="Raider" class="activity">Räuber</button>
         </nav>
         @if (CurrentPhaseId != 2)
@@ -242,7 +242,7 @@
                         {
                             <article class="ressourceCard WoodCard">
                                 <img src="/img/log.svg" alt="kein wut">
-                                <h3>@Card.Id</h3>
+                                <h3>@CardName(Card.Id)</h3>
                             </article>
                         }
                     </div>
@@ -251,7 +251,7 @@
                         {
                             <article class="ressourceCard ClayCard">
                                 <img src="/img/clay.webp" alt="kein wut">
-                                <h3>@Card.Id</h3>
+                                <h3>@CardName(Card.Id)</h3>
                                 <p></p>
                             </article>
                         }
@@ -261,7 +261,7 @@
                         {
                             <article class="ressourceCard SheepCard">
                                 <img src="/img/sheep.svg" alt="kein wut">
-                                <h3>@Card.Id</h3>
+                                <h3>@CardName(Card.Id)</h3>
                             </article>
                         }
                     </div>
@@ -270,7 +270,7 @@
                         {
                             <article class="ressourceCard WheatCard">
                                 <img src="/img/wheat.svg" alt="kein wut">
-                                <h3>@Card.Id</h3>
+                                <h3>@CardName(Card.Id)</h3>
                             </article>
                         }
                     </div>
@@ -279,7 +279,7 @@
                         {
                             <article class="ressourceCard OreCard Used">
                                 <img src="/img/ore.png" alt="kein wut">
-                                <h3>@Card.Id</h3>
+                                <h3>@CardName(Card.Id)</h3>
                             </article>
                         }
                     </div>
@@ -313,7 +313,7 @@
                                     }
                                 }
                             }
-                            <h3>@Card.Id</h3>
+                            <h3>@CardName(Card.Id)</h3>
                         </article>
                     }
                     @foreach (var SCard in ActivePlayers[CurrentColorId].RessourceCards.Where(r => r.IsSpecial && r.IsDevelopment)) {
@@ -321,7 +321,7 @@
                             @if (SCard.Id == ECards.Monopol)
                             {
                                 <img src="/img/monopol.svg" alt="kein wut">
-                                <h3>@SCard.Id</h3>
+                                <h3>@CardName(SCard.Id)</h3>
 
                             }
                             else
@@ -329,7 +329,7 @@
                                 if (SCard.Id == ECards.YearsOfPlenty)
                                 {
                                     <img src="/img/yearsofplenty.svg" alt="kein wut">
-                                    <h3>Year of Plenty</h3>
+                                    <h3>@CardName(SCard.Id)</h3>
 
                                 }
                             }
@@ -356,11 +356,11 @@
                 ButtonText = "Würfel würfeln";
             }
 
-            <div id="nextPlayerButton"><button disabled="@(ThiefPending || HasWon)" @onclick="() => ChangeBorderColor()">@ButtonText </button></div>
+            <div id="nextPlayerButton"><button disabled="@HasWon" data-locked="@ThiefPending" @onclick="() => ChangeBorderColor()">@ButtonText </button></div>
         }
         else
         {
-            <div id="nextPlayerButton"><button disabled="@(ThiefPending || HasWon)" @onclick="() => Ertragerwirtschafter()">Ertrag erwirtschaften</button></div>
+            <div id="nextPlayerButton"><button disabled="@HasWon" data-locked="@ThiefPending" @onclick="() => Ertragerwirtschafter()">Ertrag erwirtschaften</button></div>
         }
     </aside>
 </main>
@@ -449,6 +449,8 @@
     // --- bauen nur wenn kein räuber offen, nicht im würfel screen, keiner gewonnen
     public bool CanBuild => !ThiefPending && !HasWon && CurrentPhaseId != 2;
     public string TilePointer => ThiefPending ? "auto" : "none";
+    // --- räuber offen -> nicht disabled sondern locked, sonst kommt der klick fürs wackeln nie an
+    public bool Blocked => HasWon || CurrentPhaseId == 2;
 
     protected override async Task OnInitializedAsync() {
         InitPlayers();
@@ -504,7 +506,11 @@
     }
 
     public async Task ChangeBorderColor() {
-        if (ThiefPending || HasWon) return;
+        if (HasWon) return;
+        if (ThiefPending) {
+            await Js.InvokeVoidAsync("Thief.blocked", "#nextPlayerButton button");
+            return;
+        }
 
         if (CurrentPhaseId == 0) {
             if (FirstPicsList[CurrentColorId][0] == 0 && FirstPicsList[CurrentColorId][1] == 0) {
@@ -526,14 +532,14 @@
             }
             else {
                 if (FirstPicsList[CurrentColorId][0] == 0) {
-                    await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][1]} Straßen bauen");
+                    await Js.InvokeVoidAsync("alert", $"Du musst noch {Count(FirstPicsList[CurrentColorId][1], "Straße", "Straßen")} bauen.");
                 }
                 else {
                     if (FirstPicsList[CurrentColorId][1] == 0) {
-                        await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen bauen");
+                        await Js.InvokeVoidAsync("alert", $"Du musst noch {Count(FirstPicsList[CurrentColorId][0], "Siedlung", "Siedlungen")} bauen.");
                     }
                     else {
-                        await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen und {FirstPicsList[CurrentColorId][1]} Straßen bauen");
+                        await Js.InvokeVoidAsync("alert", $"Du musst noch {Count(FirstPicsList[CurrentColorId][0], "Siedlung", "Siedlungen")} und {Count(FirstPicsList[CurrentColorId][1], "Straße", "Straßen")} bauen.");
                     }
                 }
             }
@@ -635,6 +641,23 @@
         });
         return stringCards.ToArray();
     }
+
+    // --- deutsche namen für die karten
+    public string CardName(ECards id) => id switch
+    {
+        ECards.Wood => "Holz",
+        ECards.Clay => "Lehm",
+        ECards.Sheep => "Schaf",
+        ECards.Wheat => "Weizen",
+        ECards.Ore => "Erz",
+        ECards.Knight => "Ritter",
+        ECards.WinPoint => "Siegpunkt",
+        ECards.Monopol => "Monopol",
+        ECards.YearsOfPlenty => "Erfindung",
+        _ => id.ToString()
+    };
+
+    public string Count(int n, string one, string many) => $"{n} {(n == 1 ? one : many)}";
 
     public void GiveWinPoints(int points)
     {
@@ -758,7 +781,11 @@
 
     public async Task Ertragerwirtschafter()
     {
-        if (CurrentPhaseId != 2 || ThiefPending || HasWon || Busy) return;
+        if (ThiefPending) {
+            await Js.InvokeVoidAsync("Thief.blocked", "#nextPlayerButton button");
+            return;
+        }
+        if (CurrentPhaseId != 2 || HasWon || Busy) return;
         Busy = true;
         try
         {
@@ -878,9 +905,16 @@
 
     public async Task BuyDevCard()
     {
+        if (ThiefPending) {
+            await Js.InvokeVoidAsync("Thief.blocked", "#developmentBuy");
+            return;
+        }
         if (!CanBuild || Busy) return;
         var player = ActivePlayers[CurrentColorId];
-        if (!Pay(player, ECards.Sheep, ECards.Wheat, ECards.Ore)) return;
+        if (!Pay(player, ECards.Sheep, ECards.Wheat, ECards.Ore)) {
+            await Js.InvokeVoidAsync("Board.shake", "#developmentBuy");
+            return;
+        }
 
         List<ACards> possibleCards =
         [

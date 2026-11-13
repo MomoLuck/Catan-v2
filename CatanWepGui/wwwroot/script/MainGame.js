@@ -72,6 +72,19 @@ window.Board = window.Board || {
     calm: function () {
         return window.matchMedia("(prefers-reduced-motion: reduce)").matches
     },
+    // --- nein-wackeln wenn ein klick grad nix darf
+    shake: function (target) {
+        const el = typeof target == "string" ? document.querySelector(target) : target
+        if (!el || this.calm()) return
+        el.animate([
+            { transform: "translateX(0)" },
+            { transform: "translateX(-7px)" },
+            { transform: "translateX(6px)" },
+            { transform: "translateX(-4px)" },
+            { transform: "translateX(3px)" },
+            { transform: "translateX(0)" }
+        ], { duration: 380, easing: "ease-in-out" })
+    },
     // --- strassen sind rotiert -> rotation vorne dran sonst wachsen die schrägen schief
     pop: function (element, road) {
         if (this.calm()) return
@@ -279,6 +292,10 @@ window.Butn = window.Butn || {
 
         for (const button of buttons) {
             button.addEventListener("click", function () {
+                if (button.hasAttribute("data-locked")) {
+                    Thief.blocked(button)
+                    return
+                }
                 if(!button.classList.contains("pressed")){
                     removeBackgroundColor()
                     button.style.backgroundColor = "#af7e69";
@@ -338,15 +355,15 @@ window.Ertrag = window.Ertrag || {
 window.Win = window.Win || {
     hasWon:function(winnerName, playerColor){
         document.getElementById("winnerOverlay").style.display = "flex";
-        document.getElementById("winnerName").textContent = winnerName + " has Won";
+        document.getElementById("winnerName").textContent = winnerName + " hat gewonnen!";
 
         const placed = cls => [...document.getElementsByClassName(cls)]
             .filter(s => !s.classList.contains("active"))
             .filter(s => Board.owner(s) === playerColor).length;
 
-        document.getElementById("streetsPlaced").textContent = "Streets Placed: " + placed("bord");
-        document.getElementById("settlementsPlaced").textContent = "Settlements Placed: " + placed("Settlement");
-        document.getElementById("citiesPlaced").textContent = "Cities Placed: " + placed("City");
+        document.getElementById("streetsPlaced").textContent = "Gebaute Straßen: " + placed("bord");
+        document.getElementById("settlementsPlaced").textContent = "Gebaute Siedlungen: " + placed("Settlement");
+        document.getElementById("citiesPlaced").textContent = "Gebaute Städte: " + placed("City");
 
     }
 }
@@ -410,6 +427,18 @@ window.Thief = window.Thief || {
             .map(node => Board.owner(node))
             .filter(Boolean)
         return [...new Set(owners)]
+    },
+    // --- geklickter button wackelt + räuber button pulst damit man sieht warum
+    blocked: function (target) {
+        Board.shake(target)
+        if (Board.calm()) return
+        document.getElementById("Raider").animate([
+            { transform: "scale(1)" },
+            { transform: "scale(1.15)" },
+            { transform: "scale(1)" },
+            { transform: "scale(1.15)" },
+            { transform: "scale(1)" }
+        ], { duration: 600, easing: "ease-in-out" })
     },
     lock: function () {
         Butn.reset()

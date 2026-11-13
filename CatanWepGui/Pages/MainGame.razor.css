@@ -665,10 +665,36 @@ aside nav button:hover{;
     transform: rotate(180deg);
 }
 
+/* --- würfelzahl groß */
+#activePlayer .diceNumber{
+    display: block;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-top: 6px;
+    color: inherit;
+    text-decoration: none;
+    animation: diceIn 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+#activePlayer .diceNumber.seven{
+    color: #c5523b;
+}
+
+[data-locked]{
+    cursor: not-allowed !important;
+}
+
 /* --- animationen */
 @keyframes overlayIn{
     from{ opacity: 0; }
     to{ opacity: 1; }
+}
+
+@keyframes diceIn{
+    from{ transform: scale(0.3) rotate(-25deg); opacity: 0; }
+    to{ transform: scale(1) rotate(0); opacity: 1; }
 }
 
 @keyframes winnerIn{
@@ -677,7 +703,7 @@ aside nav button:hover{;
 }
 
 @media (prefers-reduced-motion: reduce){
-    #winnerOverlay, #winnerOverlay footer{
+    #winnerOverlay, #winnerOverlay footer, #activePlayer .diceNumber{
         animation: none;
     }
     .ressourceCard, .tile, .costBody, .costArrow{

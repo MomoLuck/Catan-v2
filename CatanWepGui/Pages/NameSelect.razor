@@ -9,7 +9,7 @@
     <section>
     @for (int i = 0; i < Playernum; i++) {
         Player currentPlayer = Players.PlayerList[i];
-        string playerLabel = $"Player {i + 1}";
+        string playerLabel = $"Spieler {i + 1}";
         int submitNumber = i;
         string[] ids = ["a", "b", "c", "d"];
         <span>
@@ -18,18 +18,18 @@
                 <h4>@playerLabel</h4>
                 <div>
                     <label id="label">
-                        <a>Username:</a>
+                        <a>Benutzername:</a>
                         <InputText @bind-Value="currentPlayer.Name" placeholder=@RandomUsername() />
                     </label>
                 </div>
                 <div>
                     <label id="label">
-                        <a>Color:</a>
+                        <a>Farbe:</a>
                         <input type="color" @bind="currentPlayer.Color" id="colorInput" class="color-picker">
                     </label>
                 </div>
                 <div>
-                    <button type="submit" id="submitbutton" disabled="@isDisabled(submitNumber)" >Submit</button>
+                    <button type="submit" id="submitbutton" disabled="@isDisabled(submitNumber)" >Bestätigen</button>
                 </div>
             </EditForm>
 
@@ -106,14 +106,14 @@
         string username = Players.PlayerList[num].Name;
         if (!IsValidUsername(username))
         {
-            JS.InvokeVoidAsync("alert", "The username is invalid. It must be non-empty and alphanumeric.");
+            JS.InvokeVoidAsync("alert", "Ungültiger Benutzername: Er darf nicht leer sein und nur Buchstaben, Zahlen und _ enthalten.");
             return;
         }
 
         string color = Players.PlayerList[num].Color;
         if (Players.PlayerList.Where((p, i) => i != num && p.Active).Any(p => p.Color == color))
         {
-            JS.InvokeVoidAsync("alert", "This color is already taken by another player.");
+            JS.InvokeVoidAsync("alert", "Diese Farbe hat schon ein anderer Spieler.");
             return;
         }
         
