@@ -72,12 +72,20 @@ window.Board = window.Board || {
     calm: function () {
         return window.matchMedia("(prefers-reduced-motion: reduce)").matches
     },
+    // --- strassen sind rotiert -> rotation vorne dran sonst wachsen die schrägen schief
     pop: function (element, road) {
         if (this.calm()) return
-        element.animate(road
-            ? [{ scale: "1 0" }, { scale: "1 1.15" }, { scale: "1 1" }]
-            : [{ scale: "0.3" }, { scale: "1.3" }, { scale: "1" }],
-            { duration: 320, easing: "ease-out" })
+        if (road) {
+            const base = getComputedStyle(element).transform
+            const rot = base == "none" ? "" : base + " "
+            element.animate([
+                { transform: rot + "scale(1, 0)" },
+                { transform: rot + "scale(1, 1.15)" },
+                { transform: rot + "scale(1, 1)" }
+            ], { duration: 320, easing: "ease-out" })
+        } else {
+            element.animate([{ scale: "0.3" }, { scale: "1.3" }, { scale: "1" }], { duration: 320, easing: "ease-out" })
+        }
     }
 }
 
