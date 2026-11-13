@@ -582,6 +582,89 @@ aside nav button:hover{;
     text-decoration-thickness: 2px;
 }
 
+/* --- baukosten -> zu = gleich groß wie developmentBuy, klappt nach oben auf */
+#costCard{
+    width: 90%;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
+    background-color: #DAB45F;
+    border: 2px solid black;
+    overflow: hidden;
+}
+
+.costBody{
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+}
+
+#costCard.open .costBody{
+    grid-template-rows: 1fr;
+}
+
+.costBody > div{
+    min-height: 0;
+    overflow: hidden;
+}
+
+.costRow{
+    padding: 0 12px;
+    margin-top: 8px;
+}
+
+.costRow:first-child{
+    margin-top: 12px;
+}
+
+.costRow a{
+    font-size: 11px;
+}
+
+.costRow div{
+    display: flex;
+    gap: 3px;
+}
+
+.costIcon{
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 0.4px solid black;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.costIcon img{
+    max-width: 80%;
+    max-height: 80%;
+}
+
+#costToggle{
+    width: 100%;
+    min-height: calc(3em + 24px);
+    padding: 12px;
+    border: none;
+    background-color: #DAB45F;
+}
+
+#costToggle:hover{
+    background-color: #d6ab4b;
+    text-decoration: underline;
+}
+
+.costArrow{
+    display: inline-block;
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+
+#costCard.open .costArrow{
+    transform: rotate(180deg);
+}
+
 /* --- animationen */
 @keyframes overlayIn{
     from{ opacity: 0; }
@@ -597,7 +680,7 @@ aside nav button:hover{;
     #winnerOverlay, #winnerOverlay footer{
         animation: none;
     }
-    .ressourceCard, .tile{
+    .ressourceCard, .tile, .costBody, .costArrow{
         transition: none;
     }
 }
