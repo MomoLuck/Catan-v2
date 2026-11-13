@@ -1,32 +1,61 @@
+// --- credits autoscroll -> stoppt beim verlassen, pausiert wenn man selber scrollt
+// instant weil bootstrap smooth scroll an hat -> jeder frame hat sonst den vorigen abgebrochen
 window.autoScroll = window.autoScroll || {
+    raf: 0,
+    timer: 0,
+    pos: 0,
+    last: null,
+    speed: 70,
+
     scroller: function () {
-        const current = window.scrollY;
-        const body = document.body;
-        const html = document.documentElement;
+        this.stop()
+        document.documentElement.classList.add("noScrollbar")
+        window.scrollTo({ top: 0, behavior: "instant" })
+        this.pos = 0
+        this.onUser = () => this.pause()
+        window.addEventListener("wheel", this.onUser, { passive: true })
+        window.addEventListener("touchstart", this.onUser, { passive: true })
+        window.addEventListener("keydown", this.onUser)
+        this.timer = setTimeout(() => this.run(), 1200)
+    },
 
-        // Ziel berechnen: höchste bekannte Scrollhöhe
-        const maxScroll = Math.max(
-            body.scrollHeight, body.offsetHeight,
-            html.clientHeight, html.scrollHeight, html.offsetHeight
-        );
-        const target = maxScroll + 1000;
-        const distance = target - current;
-        const duration = 15000;
-        let startTime = null;
-
-        function scrollAnimation(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const progress = timestamp - startTime;
-            const scrollTo = current + (distance * (progress / duration));
-            window.scrollTo(0, scrollTo);
-
-            if (progress < duration) {
-                requestAnimationFrame(scrollAnimation);
-            } else {
-                window.scrollTo(0, target);
+    run: function () {
+        this.last = null
+        this.pos = window.scrollY
+        const step = t => {
+            if (this.last !== null) {
+                this.pos += (t - this.last) / 1000 * this.speed
             }
+            this.last = t
+            const max = document.documentElement.scrollHeight - window.innerHeight
+            window.scrollTo({ top: this.pos, behavior: "instant" })
+            if (this.pos >= max) {
+                this.raf = 0
+                return
+            }
+            this.raf = requestAnimationFrame(step)
         }
+        this.raf = requestAnimationFrame(step)
+    },
 
-        requestAnimationFrame(scrollAnimation);
+    // --- selber scrollen -> kurz warten und dann von da weiter
+    pause: function () {
+        cancelAnimationFrame(this.raf)
+        this.raf = 0
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => this.run(), 2500)
+    },
+
+    stop: function () {
+        cancelAnimationFrame(this.raf)
+        this.raf = 0
+        clearTimeout(this.timer)
+        if (this.onUser) {
+            window.removeEventListener("wheel", this.onUser)
+            window.removeEventListener("touchstart", this.onUser)
+            window.removeEventListener("keydown", this.onUser)
+            this.onUser = null
+        }
+        document.documentElement.classList.remove("noScrollbar")
     }
 };

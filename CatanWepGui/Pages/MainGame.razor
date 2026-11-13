@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="costToggle" @onclick="@(() => CostOpen = !CostOpen)">Baukosten <span class="costArrow">&#9650;</span></button>
+                <button id="costToggle" @onclick="@(() => CostOpen = !CostOpen)">Baukosten</button>
             </div>
             <button id="developmentBuy" disabled="@Blocked" data-locked="@ThiefPending" @onclick="@(() => BuyDevCard())">Entwicklungs&shy;karte kaufen</button>
         </div>
@@ -377,6 +377,51 @@
 .intersec:hover{
     transition: 0.4s !important;
     background-color: rgba(0, 160, 255, 0.9);
+}
+/* --- größere unsichtbare klickfläche -> daneben klicken geht auch */
+.intersec.active::before, .intersec:has(.crownTemp)::before{
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+}
+.bord.active::before{
+    content: "";
+    position: absolute;
+    inset: -4px -10px;
+}
+/* --- hover bei bauplätzen, inline farbe braucht important */
+.intersec.active:hover{
+    background-color: rgba(0, 160, 255, 0.95) !important;
+    transform: scale(1.8);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 10px 3px rgba(0, 160, 255, 0.8);
+    z-index: 5;
+    cursor: pointer;
+}
+.bord.active:hover{
+    background-color: rgba(0, 160, 255, 0.95) !important;
+    scale: 1.15;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 10px 2px rgba(0, 160, 255, 0.8);
+    z-index: 5;
+    cursor: pointer;
+}
+.intersec:has(.crownTemp){
+    cursor: pointer;
+}
+.crownTemp{
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.intersec:has(.crownTemp):hover .crownTemp{
+    background-color: rgba(0, 160, 255, 0.95) !important;
+    transform: translateY(-3px) scale(1.3);
+}
+@@media (prefers-reduced-motion: reduce){
+    .intersec.active:hover, .intersec:has(.crownTemp):hover .crownTemp{
+        transform: none;
+    }
+    .bord.active:hover{
+        scale: none;
+    }
 }
 </style>
 

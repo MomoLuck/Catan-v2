@@ -1,6 +1,7 @@
 ﻿@page "/Credits" 
 @inject IJSRuntime JSRuntime
 @inject NavigationManager _nav
+@implements IAsyncDisposable
 <main>
     <h1>Siedler von Catan - Credits</h1>
     <article>
@@ -92,9 +93,28 @@
 </main>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    // --- erst nach dem rendern scrollen, vorher gibts die seite noch nicht
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Console.WriteLine("ariva");
-        await JSRuntime.InvokeVoidAsync("window.autoScroll.scroller");    }
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("autoScroll.scroller");
+        }
+    }
+
+    // --- seite verlassen -> scroll aus, sonst scrollt das menü weiter
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("autoScroll.stop");
+        }
+        catch (JSException)
+        {
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
 
 }

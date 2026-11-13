@@ -10,11 +10,13 @@
 .tile{
     position: relative;
     user-select: none;
-    transition: filter 0.2s ease;
+    transition: filter 0.2s ease, transform 0.2s ease;
     background-size: cover;
 }
 .tile:hover{
     filter: brightness(1.15);
+    transform: scale(1.04);
+    z-index: 3;
     cursor: pointer;
 }
 .tile a{
@@ -108,7 +110,7 @@ main {
     width: calc(var(--s) - 120px);
     min-width: calc(var(--s) - 120px);
     clip-path: unset;
-    transition: background-color 0.3s ease !important;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease !important;
 }
 #top_grid_37{
     position: relative;
@@ -136,7 +138,7 @@ main {
     width: calc(var(--s) - 123px);
     min-width: calc(var(--s) - 123px);
     clip-path: unset;
-    transition: background-color 0.3s ease !important;
+    transition: background-color 0.2s ease, scale 0.15s ease, box-shadow 0.15s ease !important;
 }
 #top_grid_line_2{
     transform: rotate(-60deg)
@@ -260,6 +262,7 @@ main {
     transform: rotate(-60deg)
 }
 address{
+    --side: 162px;
     display: flex;
     min-width: 172px;
     max-width: 172px;
@@ -273,7 +276,7 @@ address{
     min-height: 13%;
     margin-left: 10px;
     margin-top: 5px;
-    max-width: 175.48px;
+    width: var(--side);
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -297,8 +300,7 @@ address{
     min-height: 7%;
     margin-left: 10px;
     margin-top: 5px;
-    min-width: 140px;
-    max-width: 140px;
+    width: var(--side);
     background-color: #eda363;
     
     white-space: normal;
@@ -312,7 +314,7 @@ address{
 }
 
 .inactivePlayer a{
-    font-size: 10px;
+    font-size: 12px;
 }
 
 aside{
@@ -349,9 +351,13 @@ aside nav button{
 
 }
 
-aside nav button:hover{;
-    background-color: #83634A;
+aside nav button:hover{
+    filter: brightness(1.2);
     text-decoration: underline;
+}
+
+aside nav button:active{
+    transform: scale(0.95);
 }
 
 #switchable{
@@ -542,7 +548,7 @@ aside nav button:hover{;
 }
 
 #developmentBuy{
-    width: 90%;
+    width: var(--side);
     padding: 12px;
     border-radius: 5px;
     margin-left: 10px;
@@ -584,7 +590,7 @@ aside nav button:hover{;
 
 /* --- baukosten -> zu = gleich groß wie developmentBuy, klappt nach oben auf */
 #costCard{
-    width: 90%;
+    width: var(--side);
     border-radius: 5px;
     margin-left: 10px;
     margin-top: 5px;
@@ -655,15 +661,6 @@ aside nav button:hover{;
     text-decoration: underline;
 }
 
-.costArrow{
-    display: inline-block;
-    font-size: 10px;
-    transition: transform 0.3s ease;
-}
-
-#costCard.open .costArrow{
-    transform: rotate(180deg);
-}
 
 /* --- würfelzahl groß */
 #activePlayer .diceNumber{
@@ -706,7 +703,7 @@ aside nav button:hover{;
     #winnerOverlay, #winnerOverlay footer, #activePlayer .diceNumber{
         animation: none;
     }
-    .ressourceCard, .tile, .costBody, .costArrow{
+    .ressourceCard, .tile, .costBody{
         transition: none;
     }
 }

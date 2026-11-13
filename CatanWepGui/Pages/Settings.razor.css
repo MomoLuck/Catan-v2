@@ -36,6 +36,25 @@ article{
     color: #333;
 }
 
+/* --- alle dropdowns gleich breit, select kommt aus InputSelect -> deep */
+.object ::deep select{
+    width: 80%;
+    padding: 6px 10px;
+    font-size: 16px;
+    border: 1px solid #363c21;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+}
+
+.object ::deep form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
 .custom-dropdown option {
     background-color: #ffffff;
     color: #333;
@@ -70,16 +89,18 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 30px;
-    width: 100%;
-    margin: 5px;
-
-    border-radius: 4px;
-    background-color: #555555;
+    height: 50px;
+    width: 25%;
+    margin-top: 30px;
+    border: 1px solid #363c21;
+    border-radius: 5px;
+    background-color: #3E4F2B;
     color: #fff;
     transition-duration: 0.4s;
 }
-
+button:hover{
+    background-color: #638044;
+}
 button span {
     cursor: pointer;
     display: inline-block;
