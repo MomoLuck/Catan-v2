@@ -9,6 +9,10 @@
 @inject IJSRuntime Js
 @inject NavigationManager _nav
 
+@if (ActivePlayers.Count == 0)
+{
+    return;
+}
 <main>
     <div id="winnerOverlay">
         <footer>
@@ -44,42 +48,41 @@
             {
                 <div id="activePlayer" style="border: 2px solid black; transition: border-color 0.5s ease-in-out;">
                     <h4>Dice Roll</h4>
-                    @{ Dice(); }
                     <a>@DiceRoll</a>
                 </div>
             }
         </div>
-        <button id="developmentBuy"  @onclick="@(() => BuyDevCard())">Buy Developmentcard</button>
+        <button id="developmentBuy" disabled="@(!CanBuild)" @onclick="@(() => BuyDevCard())">Buy Developmentcard</button>
 
     </address>
     <article>
         <section>
             <div class="non-tile"></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[0].ImageUrl); pointer-events: none" class="tile" ><a>@TileRandomizer.Id[0]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[1].ImageUrl); pointer-events: none" class="tile" ><a>@TileRandomizer.Id[1]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[2].ImageUrl); pointer-events: none" class="tile" ><a>@TileRandomizer.Id[2]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[0].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(0))"><a>@TileRandomizer.Id[0]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[1].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(1))"><a>@TileRandomizer.Id[1]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[2].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(2))"><a>@TileRandomizer.Id[2]</a></div>
             <div class="non-tile"></div>
             <!--row end-->
-            <div style="background-image: url(@TileRandomizer.Tiles[3].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[3]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[4].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[4]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[5].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[5]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[6].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[6]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[3].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(3))"><a>@TileRandomizer.Id[3]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[4].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(4))"><a>@TileRandomizer.Id[4]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[5].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(5))"><a>@TileRandomizer.Id[5]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[6].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(6))"><a>@TileRandomizer.Id[6]</a></div>
             <!--row end-->
-            <div style="background-image: url(@TileRandomizer.Tiles[7].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[7]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[8].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[8]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[9].ImageUrl); pointer-events: none" class="tile"></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[10].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[9]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[11].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[10]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[7].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(7))"><a>@TileRandomizer.Id[7]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[8].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(8))"><a>@TileRandomizer.Id[8]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[9].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(9))"></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[10].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(10))"><a>@TileRandomizer.Id[9]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[11].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(11))"><a>@TileRandomizer.Id[10]</a></div>
             <!--row end-->
-            <div style="background-image: url(@TileRandomizer.Tiles[12].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[11]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[13].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[12]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[14].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[13]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[15].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[14]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[12].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(12))"><a>@TileRandomizer.Id[11]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[13].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(13))"><a>@TileRandomizer.Id[12]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[14].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(14))"><a>@TileRandomizer.Id[13]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[15].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(15))"><a>@TileRandomizer.Id[14]</a></div>
             <!--row end-->
             <div class="non-tile"></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[16].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[15]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[17].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[16]</a></div>
-            <div style="background-image: url(@TileRandomizer.Tiles[18].ImageUrl); pointer-events: none" class="tile"><a>@TileRandomizer.Id[17]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[16].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(16))"><a>@TileRandomizer.Id[15]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[17].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(17))"><a>@TileRandomizer.Id[16]</a></div>
+            <div style="background-image: url(@TileRandomizer.Tiles[18].ImageUrl); pointer-events: @TilePointer" class="tile" @onclick="@(() => PlaceThief(18))"><a>@TileRandomizer.Id[17]</a></div>
             <div class="non-tile"></div>
             <!--row end-->
 
@@ -181,9 +184,9 @@
     </article>
     <aside>
         <nav>
-            <button id="City" class="building butn" @onclick="@(() => Build(new City(), ".intersec"))">Stadt</button>
-            <button id="Settlement" class="building butn" @onclick="@(() => Build(new Settlement(), ".intersec"))">Siedlung</button>
-            <button id="Road" class="building butn" @onclick="@(() => Build(new Road(), ".bord"))">Straße</button>
+            <button id="City" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new City(), ".intersec"))">Stadt</button>
+            <button id="Settlement" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new Settlement(), ".intersec"))">Siedlung</button>
+            <button id="Road" class="building butn" disabled="@(!CanBuild)" @onclick="@(() => Build(new Road(), ".bord"))">Straße</button>
             <button id="Raider" class="activity">Räuber</button>
         </nav>
         @if (CurrentPhaseId != 2)
@@ -309,11 +312,11 @@
                 ButtonText = "Würfel würfeln";
             }
 
-            <div id="nextPlayerButton"><button @onclick="() => ChangeBorderColor()">@ButtonText </button></div>
+            <div id="nextPlayerButton"><button disabled="@(ThiefPending || HasWon)" @onclick="() => ChangeBorderColor()">@ButtonText </button></div>
         }
         else
         {
-            <div id="nextPlayerButton"><button @onclick="() => Ertragerwirtschafter()">Ertrag erwirtschaften</button></div>
+            <div id="nextPlayerButton"><button disabled="@(ThiefPending || HasWon)" @onclick="() => Ertragerwirtschafter()">Ertrag erwirtschaften</button></div>
         }
     </aside>
 </main>
@@ -364,7 +367,7 @@
     public bool Active4 { get; set; }
     /*
      *
-     * 
+     *
      *
      */
     public AFigure CurrentBuilding { get; set; } = new City();
@@ -381,22 +384,35 @@
     public string ButtonText { get; set; } = "Nächster Spieler";
     public List<int> CurrentcolorIdList { get; set; } = new List<int>();
     public List<string> GridPlacedList { get; set; } = Enumerable
-        .Range(1, 35)
+        .Range(1, 36)
         .Select(i => $"top_grid_{i}")
         .ToList();
     public List<string> GridPlacedListCity { get; set; } = Enumerable
-        .Range(1, 35)
+        .Range(1, 36)
         .Select(i => $"top_grid_{i}")
         .ToList();
     public List<string> GridPlacedListStreet { get; set; } = Enumerable
-        .Range(1, 40)
+        .Range(0, 42)
         .Select(i => $"top_grid_line_{i}")
         .ToList();
     public bool On { get; set; } = false;
+    public bool ThiefPending { get; set; } = false;
+    public int ThiefTile { get; set; } = 9;
+    public bool Busy { get; set; } = false;
+    public static readonly ECards[] BaseCards = [ECards.Wood, ECards.Clay, ECards.Sheep, ECards.Wheat, ECards.Ore];
+
+    // --- bauen nur wenn kein räuber offen, nicht im würfel screen, keiner gewonnen
+    public bool CanBuild => !ThiefPending && !HasWon && CurrentPhaseId != 2;
+    public string TilePointer => ThiefPending ? "auto" : "none";
+
     protected override async Task OnInitializedAsync() {
+        InitPlayers();
+        if (ActivePlayers.Count == 0) {
+            _nav.NavigateTo("/");
+            return;
+        }
         TileRandomizer.ShuffleTiles();
         TileRandomizer.AddRandId();
-        InitPlayers();
         CurrentcolorIdList = Enumerable.Range(0, ActivePlayers.Count).ToList();
     }
 
@@ -410,40 +426,41 @@
     {
         if (Active1)
         {
-            Player player = new Player(Username1, Color1);
-            
+            Player player = new Player(Username1 ?? "", Color1 ?? "");
+
             ActivePlayers.Add(player);
             ColorRotator.Add("#"+player.Color);
             FirstPicsList.Add([2,2]);
         }
         if (Active2)
         {
-            Player player = new Player(Username2, Color2);
-            
+            Player player = new Player(Username2 ?? "", Color2 ?? "");
+
             ActivePlayers.Add(player);
             ColorRotator.Add("#"+player.Color);
             FirstPicsList.Add([2,2]);
         }
         if (Active3)
         {
-            Player player = new Player(Username3, Color3);
-            
+            Player player = new Player(Username3 ?? "", Color3 ?? "");
+
             ActivePlayers.Add(player);
             ColorRotator.Add("#"+player.Color);
             FirstPicsList.Add([2,2]);
         }
         if (Active4)
         {
-            Player player = new Player(Username4, Color4);
-            
+            Player player = new Player(Username4 ?? "", Color4 ?? "");
+
             ActivePlayers.Add(player);
             ColorRotator.Add("#"+player.Color);
             FirstPicsList.Add([2,2]);
         }
     }
 
-    public void ChangeBorderColor() {
-        
+    public async Task ChangeBorderColor() {
+        if (ThiefPending || HasWon) return;
+
         if (CurrentPhaseId == 0) {
             if (FirstPicsList[CurrentColorId][0] == 0 && FirstPicsList[CurrentColorId][1] == 0) {
                 if (CurrentColorId < ActivePlayers.Count - 1) {
@@ -464,14 +481,14 @@
             }
             else {
                 if (FirstPicsList[CurrentColorId][0] == 0) {
-                    Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][1]} Straßen bauen");
+                    await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][1]} Straßen bauen");
                 }
                 else {
                     if (FirstPicsList[CurrentColorId][1] == 0) {
-                        Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen bauen");
+                        await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen bauen");
                     }
                     else {
-                        Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen und {FirstPicsList[CurrentColorId][1]} Straßen bauen");
+                        await Js.InvokeVoidAsync("alert", $"Du musst noch {FirstPicsList[CurrentColorId][0]} Siedlungen und {FirstPicsList[CurrentColorId][1]} Straßen bauen");
                     }
                 }
             }
@@ -484,7 +501,7 @@
                 HasRolled = false;
                 PlayerMove = false;
                 DiceRoll = "?";
-                BlockButton();
+                Dice();
 
             }
                 else
@@ -507,13 +524,13 @@
                     }
                 }
         }
+        await Js.InvokeVoidAsync("Butn.reset");
     }
-    
 
-public void Dice() {
+    // --- zwei würfel -> 7 kommt am öftesten wie im echten spiel
+    public void Dice() {
         if (!HasRolled && CurrentPhaseId != 0) {
-            Random rand = new Random();
-            int randomNum = rand.Next(2, 13);
+            int randomNum = Random.Shared.Next(1, 7) + Random.Shared.Next(1, 7);
             DiceRoll = randomNum.ToString();
             HasRolled = true;
         }
@@ -528,19 +545,19 @@ public void Dice() {
                 case ECards.Clay:
                     type = "Clay";
                     break;
-                    
+
                 case ECards.Wood:
                     type = "Wood";
                     break;
-                    
+
                 case ECards.Sheep:
                     type = "Sheep";
                     break;
-                    
+
                 case ECards.Wheat:
                     type = "Wheat";
                     break;
-                    
+
                 case ECards.Ore:
                     type = "Stone";
                     break;
@@ -578,328 +595,344 @@ public void Dice() {
     {
         ActivePlayers[CurrentColorId].WinPoints += points;
     }
-    
-    
+
+    // --- karten zahlen, nur wenn sichs komplett ausgeht -> sonst wird gar nix abgezogen
+    public bool Pay(Player player, params ECards[] cost)
+    {
+        if (cost.GroupBy(c => c).Any(g => player.RessourceCards.Count(card => card.Id == g.Key) < g.Count())) return false;
+        foreach (var id in cost)
+        {
+            player.RessourceCards.Remove(player.RessourceCards.First(card => card.Id == id));
+        }
+        return true;
+    }
+
+
     <!-- In Asyn tasks und so ty shi ty shi mit js und so -->
-    
+
     public async Task Win()
     {
-        foreach (var player in ActivePlayers)
-        {
-            if (player.WinPoints >= 10)
-            {
-                HasWon = true;
-            }
-        }
+        if (HasWon) return;
+        var player = ActivePlayers.FirstOrDefault(p => p.WinPoints >= 10);
+        if (player == null) return;
 
-        if (HasWon)
-        {
-            var player = ActivePlayers.Where(player => player.WinPoints >= 10).ToList()[0];
-            await Js.InvokeVoidAsync("Win.hasWon", player.Name, player.Color);
-        }
+        HasWon = true;
+        await Js.InvokeVoidAsync("Win.hasWon", player.Name, player.Color);
     }
-    
+
     public async Task Change(string classs){
         await Js.InvokeVoidAsync("Change.changeElement", classs, ColorRotator[CurrentColorId],FirstPicsList[CurrentColorId] ,RessourceCardsJsConvert(ActivePlayers[CurrentColorId].RessourceCards));
     }
-    public async Task BlockButton(){
-        await Js.InvokeVoidAsync("Butn.blockButnn", CurrentPhaseId);
-    }
-    public void Build(AFigure building, string id) {
-            Change(id);
+    public async Task Build(AFigure building, string id) {
+            if (!CanBuild) return;
             CurrentBuilding = building;
+            await Change(id);
 
     }
 
+    // --- busy -> doppelklick während dem js await darf nicht 2x bauen
     public async Task Place(string location) {
-        if (GridPlacedList.Contains(location) && CurrentBuilding.Id == new Settlement().Id)
-        {
-            GridPlacedList.Remove(location);
-                if (FirstPicsList[CurrentColorId][0] == 0)
-                {
-                    var toRemove = ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Clay).Take(1).ToList();
-                    toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Wood).Take(1).ToList()[0]);
-                    toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Sheep).Take(1).ToList()[0]);
-                    toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Wheat).Take(1).ToList()[0]);
-                    foreach (var card in toRemove)
-                    {
-                        ActivePlayers[CurrentColorId].RessourceCards.Remove(card);
-                    }
-                }
-            
-            await Js.InvokeVoidAsync("Place.placeBuilding", location, CurrentBuilding, ColorRotator[CurrentColorId], FirstPicsList[CurrentColorId][0], RessourceCardsJsConvert(ActivePlayers[CurrentColorId].RessourceCards));
-            if (FirstPicsList[CurrentColorId][0] > 0) {
-                FirstPicsList[CurrentColorId][0] -= 1;
-            }
-            Build(CurrentBuilding, ".intersec");
-            GiveWinPoints(1);
+        if (!CanBuild || Busy) return;
+        var player = ActivePlayers[CurrentColorId];
+        var firstPics = FirstPicsList[CurrentColorId];
+        var color = ColorRotator[CurrentColorId];
+        var cards = RessourceCardsJsConvert(player.RessourceCards);
 
-
-        } else
+        Busy = true;
+        try
         {
-            var canPlace = await Js.InvokeAsync<bool>("Place.canPlaceSettlement","City", location, "#" + ActivePlayers[CurrentColorId].Color, false, RessourceCardsJsConvert(ActivePlayers[CurrentColorId].RessourceCards));
-            if (GridPlacedListCity.Contains(location) && CurrentBuilding.Id == new City().Id && FirstPicsList[CurrentColorId][0] == 0 && canPlace)
+            if (CurrentBuilding.Id == EFigures.Settlement && GridPlacedList.Contains(location))
             {
-                GridPlacedListCity.Remove(location);
-                if (FirstPicsList[CurrentColorId][0] == 0)
-                {
-                    var toRemove = ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Ore).Take(3).ToList();
-                    toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Wheat).Take(1).ToList()[0]);
-                    foreach (var card in toRemove)
-                    {
-                        ActivePlayers[CurrentColorId].RessourceCards.Remove(card);
-                    }
-                }
+                var firstPick = firstPics[0] > 0;
+                var canPlace = await Js.InvokeAsync<bool>("Place.canPlaceSettlement", "Settlement", location, color, firstPick, cards);
+                if (!canPlace) return;
+                if (!firstPick && !Pay(player, ECards.Wood, ECards.Clay, ECards.Sheep, ECards.Wheat)) return;
 
-                await Js.InvokeVoidAsync("Place.placeBuilding", location, CurrentBuilding, ColorRotator[CurrentColorId], FirstPicsList[CurrentColorId][0], RessourceCardsJsConvert(ActivePlayers[CurrentColorId].RessourceCards));
-                Build(CurrentBuilding, ".intersec");
-                GiveWinPoints(2);
+                GridPlacedList.Remove(location);
+                await Js.InvokeVoidAsync("Place.placeBuilding", location, CurrentBuilding, color, firstPics[0], RessourceCardsJsConvert(player.RessourceCards));
+                if (firstPick) {
+                    firstPics[0] -= 1;
+                }
+                GiveWinPoints(1);
+                await Change(".intersec");
+                await Win();
+            }
+            else if (CurrentBuilding.Id == EFigures.City && GridPlacedListCity.Contains(location) && firstPics[0] == 0)
+            {
+                var canPlace = await Js.InvokeAsync<bool>("Place.canPlaceSettlement", "City", location, color, false, cards);
+                if (!canPlace) return;
+                if (!Pay(player, ECards.Ore, ECards.Ore, ECards.Ore, ECards.Wheat, ECards.Wheat)) return;
+
+                GridPlacedListCity.Remove(location);
+                await Js.InvokeVoidAsync("Place.placeBuilding", location, CurrentBuilding, color, firstPics[0], RessourceCardsJsConvert(player.RessourceCards));
+                GiveWinPoints(1);
+                await Change(".intersec");
+                await Win();
             }
         }
-
+        finally
+        {
+            Busy = false;
+        }
     }
 
     public async Task PlaceStreet(string location) {
-        if (GridPlacedListStreet.Contains(location)) {
+        if (!CanBuild || Busy || CurrentBuilding.Id != EFigures.Road || !GridPlacedListStreet.Contains(location)) return;
+        var player = ActivePlayers[CurrentColorId];
+        var firstPics = FirstPicsList[CurrentColorId];
+        var color = ColorRotator[CurrentColorId];
+        var firstPick = firstPics[1] > 0;
+
+        Busy = true;
+        try
+        {
+            var canPlace = await Js.InvokeAsync<bool>("Place.canPlace", location, color, firstPick, RessourceCardsJsConvert(player.RessourceCards));
+            if (!canPlace) return;
+            if (!firstPick && !Pay(player, ECards.Wood, ECards.Clay)) return;
+
             GridPlacedListStreet.Remove(location);
-
-            if (FirstPicsList[CurrentColorId][1] == 0)
-            {
-                var toRemove = ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Wood).Take(1).ToList();
-                toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Clay).Take(1).ToList()[0]);
-                foreach (var card in toRemove)
-                {
-                    ActivePlayers[CurrentColorId].RessourceCards.Remove(card);
-                    Console.WriteLine(card.Id);
-                }
+            await Js.InvokeVoidAsync("Place.placeStreet", location, color);
+            if (firstPick) {
+                firstPics[1] -= 1;
             }
-            await Js.InvokeVoidAsync("Place.placeStreet", location, ColorRotator[CurrentColorId], FirstPicsList[CurrentColorId][1], RessourceCardsJsConvert(ActivePlayers[CurrentColorId].RessourceCards));
-            if (FirstPicsList[CurrentColorId][1] > 0) {
-                FirstPicsList[CurrentColorId][1] -= 1;
-            }
-            Build(CurrentBuilding, ".bord");
-
+            await Change(".bord");
+        }
+        finally
+        {
+            Busy = false;
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if (firstRender)
+        if (firstRender && ActivePlayers.Count > 0)
         {
             await Js.InvokeVoidAsync("Butn.butnn");
-            await MoveThief("init");
+            await Js.InvokeVoidAsync("Thief.createThief", ThiefTile, false);
         }
     }
-    
+
     public async Task Ertragerwirtschafter()
     {
-        if (DiceRoll != "?") {
-            var resources = await Js.InvokeAsync<Dictionary<string, List<object>>>("Ertrag.erwirtschaftung", Int32.Parse(DiceRoll));
-
-            foreach (var color in resources["Sheep"])
-            {
-                foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
-                {
-                    Console.WriteLine("Sheep");
-                    player.RessourceCards.Add(new ACards(ECards.Sheep,true,false,false));
-                }
-            }
-            foreach (var color in resources["Clay"]) {
-                foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
-                {
-                    Console.WriteLine("C");
-                    player.RessourceCards.Add(new ACards(ECards.Clay,true,false,false));
-                }
-            }
-            foreach (var color in resources["Stone"]) {
-                foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
-                {
-                    Console.WriteLine("St");
-                    player.RessourceCards.Add(new ACards(ECards.Ore,true,false,false));
-                }
-            }
-            foreach (var color in resources["Wheat"]) {
-                foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
-                {
-                    Console.WriteLine("Wh");
-                    player.RessourceCards.Add(new ACards(ECards.Wheat,true,false,false));
-                }
-            }
-            foreach (var color in resources["Wood"]) {
-                foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
-                {
-                    Console.WriteLine("W");
-                    player.RessourceCards.Add(new ACards(ECards.Wood,true,false,false));
-                }
-            }
-
-        }
-
-        CurrentPhaseId = 3;
-        PlayerMove = true;
-        if (DiceRoll == "7")
+        if (CurrentPhaseId != 2 || ThiefPending || HasWon || Busy) return;
+        Busy = true;
+        try
         {
-            MoveThief("check");
+            if (DiceRoll != "?") {
+                var resources = await Js.InvokeAsync<Dictionary<string, List<object>>>("Ertrag.erwirtschaftung", Int32.Parse(DiceRoll), ThiefTile);
+
+                foreach (var color in resources["Sheep"])
+                {
+                    foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
+                    {
+                        player.RessourceCards.Add(new ACards(ECards.Sheep,true,false,false));
+                    }
+                }
+                foreach (var color in resources["Clay"]) {
+                    foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
+                    {
+                        player.RessourceCards.Add(new ACards(ECards.Clay,true,false,false));
+                    }
+                }
+                foreach (var color in resources["Stone"]) {
+                    foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
+                    {
+                        player.RessourceCards.Add(new ACards(ECards.Ore,true,false,false));
+                    }
+                }
+                foreach (var color in resources["Wheat"]) {
+                    foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
+                    {
+                        player.RessourceCards.Add(new ACards(ECards.Wheat,true,false,false));
+                    }
+                }
+                foreach (var color in resources["Wood"]) {
+                    foreach (var player in ActivePlayers.Where(p => p.Color == color.ToString()))
+                    {
+                        player.RessourceCards.Add(new ACards(ECards.Wood,true,false,false));
+                    }
+                }
+
+            }
+
+            CurrentPhaseId = 3;
+            PlayerMove = true;
+            if (DiceRoll == "7")
+            {
+                Discard();
+                await StartThief();
+            }
         }
-
-        BlockButton();
-
+        finally
+        {
+            Busy = false;
+        }
     }
-    public async Task MoveThief(string phase)
+
+    // --- räuber offen -> bis er gesetzt is is alles andere gesperrt
+    public async Task StartThief()
     {
-        var player = ActivePlayers[CurrentColorId];
-        if (phase == "init")
+        ThiefPending = true;
+        await Js.InvokeVoidAsync("Thief.lock");
+    }
+
+    // --- klick aufs tile, gleiches tile zählt nicht als bewegen
+    public async Task PlaceThief(int tile)
+    {
+        if (!ThiefPending || Busy || tile == ThiefTile) return;
+        Busy = true;
+        try
         {
-            await Js.InvokeVoidAsync("Thief.move", phase); 
+            ThiefTile = tile;
+            ThiefPending = false;
+            await Js.InvokeVoidAsync("Thief.createThief", tile, true);
+            await Js.InvokeVoidAsync("Thief.unlock");
+            await Steal(tile);
         }
-        else
+        finally
         {
-            if (phase == "check")
+            Busy = false;
+        }
+    }
+
+    // --- 1 zufällige karte von wem der am tile wohnt (zufällig wer, wenns mehrere sind)
+    public async Task Steal(int tile)
+    {
+        var colors = await Js.InvokeAsync<string[]>("Thief.neighbours", tile);
+        var player = ActivePlayers[CurrentColorId];
+        var victims = ActivePlayers
+            .Where(p => p != player && colors.Contains(p.Color) && p.RessourceCards.Any(c => BaseCards.Contains(c.Id)))
+            .ToList();
+        if (victims.Count == 0) return;
+
+        var victim = victims[Random.Shared.Next(victims.Count)];
+        var pool = victim.RessourceCards.Where(c => BaseCards.Contains(c.Id)).ToList();
+        var card = pool[Random.Shared.Next(pool.Count)];
+        victim.RessourceCards.Remove(card);
+        ActivePlayers[CurrentColorId].RessourceCards.Add(card);
+    }
+
+    // --- 7: wer mehr als 7 karten hat wirft die hälfte ab (zufällig)
+    public void Discard()
+    {
+        foreach (var p in ActivePlayers)
+        {
+            var pool = p.RessourceCards.Where(c => BaseCards.Contains(c.Id)).ToList();
+            if (pool.Count <= 7) continue;
+            foreach (var card in pool.OrderBy(_ => Random.Shared.Next()).Take(pool.Count / 2).ToList())
             {
-                    await Js.InvokeVoidAsync("Thief.move", phase); 
+                p.RessourceCards.Remove(card);
             }
         }
+    }
+
+    // --- resource von der man am wenigsten hat, 0 zählt auch
+    public ECards LeastCommon(Player player)
+    {
+        return BaseCards.OrderBy(id => player.RessourceCards.Count(c => c.Id == id)).First();
     }
 
     public async Task BuyDevCard()
     {
-        if (
-            ActivePlayers[CurrentColorId].RessourceCards.Count(card => card.Id == ECards.Sheep) >= 1
-            && ActivePlayers[CurrentColorId].RessourceCards.Count(card => card.Id == ECards.Wheat) >= 1
-            && ActivePlayers[CurrentColorId].RessourceCards.Count(card => card.Id == ECards.Ore) >= 1
-        )
+        if (!CanBuild || Busy) return;
+        var player = ActivePlayers[CurrentColorId];
+        if (!Pay(player, ECards.Sheep, ECards.Wheat, ECards.Ore)) return;
+
+        List<ACards> possibleCards =
+        [
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.Knight, true, true, false),
+            new ACards(ECards.WinPoint, true, true, false),
+            new ACards(ECards.WinPoint, true, true, false),
+            new ACards(ECards.WinPoint, true, true, false),
+            new ACards(ECards.WinPoint, true, true, false),
+            new ACards(ECards.WinPoint, true, true, false),
+            new ACards(ECards.Monopol, true, true, true),
+            new ACards(ECards.Monopol, true, true, true),
+            new ACards(ECards.Monopol, true, true, true),
+            new ACards(ECards.YearsOfPlenty, true, true, true),
+            new ACards(ECards.YearsOfPlenty, true, true, true),
+            new ACards(ECards.YearsOfPlenty, true, true, true),
+        ];
+        ACards randomCard = possibleCards[Random.Shared.Next(possibleCards.Count)];
+
+        if (randomCard.Id == ECards.Knight)
         {
-            var toRemove = ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Sheep).Take(1).ToList();
-            toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Sheep).Take(1).ToList()[0]);
-            toRemove.Add(ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == ECards.Wheat).Take(1).ToList()[0]);
+            player.RessourceCards.Add(randomCard);
+            Rittermacht();
+        }
 
-            foreach (var card in toRemove)
-            {
-                ActivePlayers[CurrentColorId].RessourceCards.Remove(card);
-            }
+        if (randomCard.Id == ECards.WinPoint)
+        {
+            player.RessourceCards.Add(randomCard);
+            GiveWinPoints(1);
+        }
 
-            var player = ActivePlayers[CurrentColorId];
-            List<ACards> possibleCards =
-            [
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.Knight, true, true, false),
-                new ACards(ECards.WinPoint, true, true, false),
-                new ACards(ECards.WinPoint, true, true, false),
-                new ACards(ECards.WinPoint, true, true, false),
-                new ACards(ECards.WinPoint, true, true, false),
-                new ACards(ECards.WinPoint, true, true, false),
-                new ACards(ECards.Monopol, true, true, true),
-                new ACards(ECards.Monopol, true, true, true),
-                new ACards(ECards.Monopol, true, true, true),
-                new ACards(ECards.YearsOfPlenty, true, true, true),
-                new ACards(ECards.YearsOfPlenty, true, true, true),
-                new ACards(ECards.YearsOfPlenty, true, true, true),
-            ];
-            Random random = new Random();
-            int randomIndex = random.Next(possibleCards.Count);
-            ACards randomCard = possibleCards[randomIndex];
-            if (randomCard.Id == ECards.Knight)
+        if (randomCard.Id == ECards.Monopol)
+        {
+            var leastCommon = LeastCommon(player);
+            player.RessourceCards.Add(randomCard);
+            foreach (var p in ActivePlayers.Where(p => p != player))
             {
-                player.RessourceCards.Add(randomCard);
-                possibleCards.Remove(randomCard);
-                MoveThief("check");
-            }
-
-            if (randomCard.Id == ECards.WinPoint)
-            {
-                GiveWinPoints(1);
-            }
-
-            if (randomCard.Id == ECards.Monopol)
-            {
-                List<Player> otherplayers = new List<Player>();
-                foreach (var p in ActivePlayers)
+                var toMove = p.RessourceCards.Where(card => card.Id == leastCommon).ToList();
+                foreach (var card in toMove)
                 {
-                    if (player != p)
-                    {
-                        otherplayers.Add(p);
-                    }
-                }
-                
-                var leastCommon = player.RessourceCards.Where(c => !c.IsSpecial)
-                    .GroupBy(card => card.Id)
-                    .Aggregate((minGroup, nextGroup) =>
-                        nextGroup.Count() < minGroup.Count() ? nextGroup : minGroup)
-                    .Key;
-
-                for (int i = 0; i < otherplayers.Count; i++)
-                {
-                    var p = otherplayers[i];
-                    var toMove = p.RessourceCards.Where(card => card.Id == leastCommon).ToList();
-                    player.RessourceCards.Add(randomCard);
-                    foreach (var card in toMove)
-                    {
-                        p.RessourceCards.Remove(card);
-                        player.RessourceCards.Add(card);
-                    }
-                    
-                    
-                }
-                
-            }
-
-            if (randomCard.Id == ECards.YearsOfPlenty)
-            {
-                var leastCommon = player.RessourceCards.Where(c => !c.IsSpecial)
-                    .GroupBy(card => card.Id)
-                    .Aggregate((minGroup, nextGroup) =>
-                        nextGroup.Count() < minGroup.Count() ? nextGroup : minGroup)
-                    .Key;
-
-                var toAdd = ActivePlayers[CurrentColorId].RessourceCards.Where(card => card.Id == leastCommon).ToList()[0];
-                player.RessourceCards.Add(randomCard);
-                for (int i = 0; i < 3; i++)
-                {
-                    player.RessourceCards.Add(toAdd);
+                    p.RessourceCards.Remove(card);
+                    player.RessourceCards.Add(card);
                 }
             }
         }
 
-        Rittermacht();
+        if (randomCard.Id == ECards.YearsOfPlenty)
+        {
+            var leastCommon = LeastCommon(player);
+            player.RessourceCards.Add(randomCard);
+            for (int i = 0; i < 3; i++)
+            {
+                player.RessourceCards.Add(new ACards(leastCommon, true, false, false));
+            }
+        }
+
+        await Win();
+        if (randomCard.Id == ECards.Knight && !HasWon)
+        {
+            await StartThief();
+        }
     }
 
     public async Task Handelsstraße()
     {
-        
+
     }
 
-    public async Task Rittermacht()
+    // --- rittermacht: ab 3 rittern, und man muss mehr haben als der der sie grad hat
+    public void Rittermacht()
     {
-        if (ActivePlayers.Where(p => p.RessourceCards.Where(c => c.Id == ECards.Rittermacht).Count() > 0).Count() > 0)
+        var player = ActivePlayers[CurrentColorId];
+        var knights = player.RessourceCards.Count(c => c.Id == ECards.Knight);
+        if (knights < 3) return;
+
+        var playerWithRittermacht = ActivePlayers.FirstOrDefault(p => p.RessourceCards.Any(c => c.Id == ECards.Rittermacht));
+        if (playerWithRittermacht == player) return;
+        if (playerWithRittermacht != null)
         {
-            if (ActivePlayers[CurrentColorId].RessourceCards.Where(c => c.Id == ECards.Knight).ToList().Count >= 3)
-            {
-                GiveWinPoints(2);
-                ActivePlayers[CurrentColorId].RessourceCards.Add(new ACards(ECards.Rittermacht, true, true, false));
-            }
+            if (knights <= playerWithRittermacht.RessourceCards.Count(c => c.Id == ECards.Knight)) return;
+            playerWithRittermacht.WinPoints -= 2;
+            playerWithRittermacht.RessourceCards.Remove(playerWithRittermacht.RessourceCards.First(c => c.Id == ECards.Rittermacht));
         }
-        else
-        {
-            var playerWithRittermacht = ActivePlayers.Where(p => p.RessourceCards.Where(c => c.Id == ECards.Rittermacht).Count() > 0).ToList()[0];
-            if (ActivePlayers[CurrentColorId].RessourceCards.Where(c => c.Id == ECards.Rittermacht).ToList().Count >= playerWithRittermacht.RessourceCards.Where(r => r.Id == ECards.Knight).Count())
-            {
-                playerWithRittermacht.WinPoints -= 2;
-                GiveWinPoints(2);
-                playerWithRittermacht.RessourceCards.Remove(playerWithRittermacht.RessourceCards.Where(c => c.Id == ECards.Rittermacht).ToList()[0]);
-                ActivePlayers[CurrentColorId].RessourceCards.Add(new ACards(ECards.Rittermacht, true, true, false));
-            }
-        }
+        GiveWinPoints(2);
+        player.RessourceCards.Add(new ACards(ECards.Rittermacht, true, true, false));
     }
 
 }
